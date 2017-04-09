@@ -14,7 +14,7 @@ public class BoardEntity {
     private String name;
     private String description;
     private Timestamp dateCreated;
-    private PersonEntity personByCreatorid;
+    private PersonEntity creatorPerson;
 
     @Id
     @Column(name = "id", nullable = false)
@@ -81,13 +81,13 @@ public class BoardEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "creatorid", referencedColumnName = "id", nullable = false)
-    public PersonEntity getPersonByCreatorid() {
-        return personByCreatorid;
+    @JoinColumn(name = "creator_id", referencedColumnName = "id", nullable = false)
+    public PersonEntity getCreatorPerson() {
+        return creatorPerson;
     }
 
-    public void setPersonByCreatorid(PersonEntity personByCreatorid) {
-        this.personByCreatorid = personByCreatorid;
+    public void setCreatorPerson(PersonEntity creatorPerson) {
+        this.creatorPerson = creatorPerson;
     }
 
 }

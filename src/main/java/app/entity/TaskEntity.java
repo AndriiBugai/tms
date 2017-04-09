@@ -108,7 +108,7 @@ public class TaskEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "assigneeid", referencedColumnName = "id")
+    @JoinColumn(name = "assignee_id", referencedColumnName = "id")
     public PersonEntity getAssigneePerson() {
         return assigneePerson;
     }
@@ -118,7 +118,7 @@ public class TaskEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "creatorid", referencedColumnName = "id")
+    @JoinColumn(name = "creator_id", referencedColumnName = "id")
     public PersonEntity getCreatorPerson() {
         return creatorPerson;
     }
@@ -128,7 +128,7 @@ public class TaskEntity {
     }
 
     @ManyToOne
-    @JoinColumn(name = "boardid", referencedColumnName = "id")
+    @JoinColumn(name = "board_id", referencedColumnName = "id")
     public BoardEntity getBoard() {
         return board;
     }
