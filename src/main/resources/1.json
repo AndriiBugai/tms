@@ -1,0 +1,43 @@
+[
+  {
+    "id": 1,
+    "name": "test task",
+    "description": null,
+    "dateCreated": 1491751424974,
+    "topPriority": null,
+    "estimation": null,
+    "assigneePerson": {
+      "id": 1,
+      "firstName": "Andrii",
+      "lastName": "Bugai",
+      "dateCreated": 1491750268643,
+      "email": "andriibugai@yahoo.com",
+      "login": "bugai",
+      "password": "1994"
+    },
+    "creatorPerson": {
+      "id": 1,
+      "firstName": "Andrii",
+      "lastName": "Bugai",
+      "dateCreated": 1491750268643,
+      "email": "andriibugai@yahoo.com",
+      "login": "bugai",
+      "password": "1994"
+    },
+    "board": {
+      "id": 1,
+      "name": "test board",
+      "description": null,
+      "dateCreated": 1491751371831,
+      "personByCreatorid": {
+        "id": 1,
+        "firstName": "Andrii",
+        "lastName": "Bugai",
+        "dateCreated": 1491750268643,
+        "email": "andriibugai@yahoo.com",
+        "login": "bugai",
+        "password": "1994"
+      }
+    }
+  }
+]
