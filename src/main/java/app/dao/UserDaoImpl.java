@@ -1,7 +1,6 @@
 package app.dao;
 
 import app.entity.PersonEntity;
-import app.entity.TaskEntity;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;

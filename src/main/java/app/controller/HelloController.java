@@ -35,5 +35,12 @@ public class HelloController {
         List<BoardEntity> entityList = boardDao.findAll();
         return mapper.writeValueAsString(entityList);
     }
-    
+
+
+    @RequestMapping("/start")
+    public String startHtml(){
+        return "/templates/greeting.html";
+    }
+
+
 }

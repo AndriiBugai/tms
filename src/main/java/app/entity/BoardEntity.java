@@ -2,7 +2,6 @@ package app.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
-import java.util.Collection;
 
 /**
  * Created by andre on 09.04.2017.

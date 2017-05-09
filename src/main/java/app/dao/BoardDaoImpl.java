@@ -1,7 +1,6 @@
 package app.dao;
 
 import app.entity.BoardEntity;
-import app.entity.TaskEntity;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 

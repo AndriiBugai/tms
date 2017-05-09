@@ -15,3 +15,6 @@ dependency-reduced-pom.xml
 README.html
 .idea
 *.iml
+node_modules/
+npm-*.log
+generated/
