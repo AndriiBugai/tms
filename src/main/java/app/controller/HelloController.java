@@ -26,7 +26,7 @@ public class HelloController {
     BoardDao boardDao;
     
     @RequestMapping("/getAllTasks")
-    public String index() throws JsonProcessingException {
+    public String getAllTasks() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         List<TaskEntity> entityList = taskDao.findAll();
         return mapper.writeValueAsString(entityList);
@@ -37,6 +37,13 @@ public class HelloController {
         ObjectMapper mapper = new ObjectMapper();
         List<TaskEntity> entityList = taskDao.findAllByBoard(Integer.valueOf(boardId));
         return mapper.writeValueAsString(entityList);
+    }
+
+    @RequestMapping("/deleteTasksById/{taskId}")
+    public void deleteTasksByBoard(@PathVariable String taskId) throws JsonProcessingException {
+        ObjectMapper mapper = new ObjectMapper();
+        TaskEntity task = taskDao.findById(Integer.valueOf(taskId));
+        taskDao.delete(task);
     }
 
     @RequestMapping("/getAllBoards")

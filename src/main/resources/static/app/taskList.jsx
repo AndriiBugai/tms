@@ -1,9 +1,10 @@
 import React, {Component} from "react";
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
+import ConfirmationPopup from './confirmationPopup.jsx';
 
 import ReactDom from "react-dom";
 import $ from 'jquery';
@@ -18,9 +19,10 @@ export default class TaskList extends React.Component {
             tasks: []
         };
         injectTapEventPlugin();
+
     }
 
-    loadCommentsFromServer(boardId) {
+    loadFromServer(boardId) {
         $.ajax({
             url: "http://localhost:8080/service/getTasksByBoard/" + boardId,
             dataType: 'json',
@@ -33,9 +35,13 @@ export default class TaskList extends React.Component {
         });
     }
 
+    update() {
+        let boardId = this.props.boardId;
+        this.loadFromServer(boardId);
+    }
+
     componentDidMount() {
-        this.loadCommentsFromServer(0);
-        // setInterval(this.loadCommentsFromServer.bind(this), 100);
+        this.loadFromServer(0);
     }
 
     componentWillUnmount() {
@@ -43,84 +49,79 @@ export default class TaskList extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        this.loadCommentsFromServer(nextProps.boardId);
+        this.loadFromServer(nextProps.boardId);
     }
 
     render() {
+        let updateCallback = this.update.bind(this);
         return (
-
-
             <div className="task-list">
-                <MuiThemeProvider>
-                    <DialogExampleSimple/>
-                </MuiThemeProvider>
-
                 <div> Your tasks:</div>
                 {this.state.tasks.map(function (task) {
                     return (
-                        <TaskItem key={task.id} task={task} />
+                        <TaskItem key={task.id} task={task} updateCallback={updateCallback} />
                     );
-
                 })}
             </div>
         )
     }
 }
 
-function TaskItem(props) {
-    return (
-        <div key={props.task.id} className="task">
-            <div className="task-body">
-                {props.task.name}
-            </div>
-            <div className="task-controls">
-                <FontAwesome name='trash-o' />
-            </div>
-        </div>
-    );
-}
+class TaskItem extends React.Component {
 
-class DialogExampleSimple extends React.Component {
-    state = {
-        open: false,
-    };
+    constructor(props) {
+        super(props);
+        this.state = {
+            popupIsOpen: false
+        };
+    }
 
-    handleOpen = () => {
-        this.setState({open: true});
-    };
+    openPopup() {
+        this.setState({
+            popupIsOpen: true
+        });
+    }
 
-    handleClose = () => {
-        this.setState({open: false});
-    };
+    closePopup() {
+        this.setState({
+            popupIsOpen: false
+        });
+    }
+
+    deleteTask() {
+        let taskId = this.props.task.id;
+        let updateCallback = this.props.updateCallback;
+        let closePopup = this.closePopup.bind(this);
+        $.ajax({
+            url: "http://localhost:8080/service/deleteTasksById/" + taskId,
+            success: () => {
+                updateCallback();
+                closePopup();
+            },
+            error: (xhr, status, err) => {
+                console.error("url", status, err.toString());
+            }
+        });
+    }
 
     render() {
-        const actions = [
-            <FlatButton
-                label="Cancel"
-                primary={true}
-                onTouchTap={this.handleClose}
-            />,
-            <FlatButton
-                label="Submit"
-                primary={true}
-                keyboardFocused={true}
-                onTouchTap={this.handleClose}
-            />,
-        ];
-
         return (
-            <div>
-                <RaisedButton label="Dialog" onTouchTap={this.handleOpen} />
-                <Dialog
-                    title="Dialog With Actions"
-                    actions={actions}
-                    modal={false}
-                    open={this.state.open}
-                    onRequestClose={this.handleClose}
-                >
-                    The actions in this window were passed in as an array of React objects.
-                </Dialog>
+            <div key={this.props.task.id} className="task">
+                <div className="task-body">
+                    {this.props.task.name}
+                </div>
+                <div className="task-controls">
+                    <div className="deleteTask" onClick={() => this.openPopup()}>
+                        <FontAwesome name='trash-o' />
+                    </div>
+                </div>
+                <ConfirmationPopup isOpen={this.state.popupIsOpen}
+                                   onCancel={() => this.closePopup()}
+                                   onSubmit={() => this.deleteTask()}
+                />
+
             </div>
         );
     }
 }
+

@@ -1,5 +1,7 @@
 import React, {Component} from "react";
 import ReactDom from "react-dom";
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import Header from './header.jsx';
 import BoardList from './boardList.jsx';
@@ -30,9 +32,18 @@ class App extends React.Component {
             <div>
                 <Header/>
                 <BoardList boardId={this.state.boardSelected} onClick={i => this.checkBoard(i)}/>
-                <TaskList  boardId={this.state.boardSelected}/>
+                <TaskList boardId={this.state.boardSelected}/>
             </div>
         )
     }
 }
-ReactDom.render(<App />, document.getElementById('react'));
+
+function MyApp() {
+    return (
+        <MuiThemeProvider>
+            <App />
+        </MuiThemeProvider>
+    )
+}
+
+ReactDom.render(<MyApp />, document.getElementById('react'));
