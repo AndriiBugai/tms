@@ -9,6 +9,7 @@ module.exports = {
         path: path.join(__dirname, 'generated'),
         filename: 'app-bundle.js'
     },
+    externals: ['axios'],
     resolve: {extensions: ['.js', '.jsx']},
     plugins: [
         new webpack.LoaderOptionsPlugin({
@@ -26,9 +27,13 @@ module.exports = {
                 test: /\.jsx?$/,
                 loader: 'babel-loader',
                 exclude: /node_modules/
+            },
+            {
+                test: /\.json$/,
+                loader: 'json'
             }
         ],
-        loaders:[{ test: /\.css$/, loader: "style-loader!css-loader" }]
+        loaders:[{ test: /\.css$/, loader: "style-loader!css-loader" }, ]
     },
     devServer: {
         noInfo: false,

@@ -6,6 +6,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import java.util.ArrayList;
 import java.util.List;
 
 @Repository
@@ -42,5 +44,12 @@ public class TaskDaoImpl implements TaskDao {
     public TaskEntity create(TaskEntity entity) {
         entityManager.persist(entity);
         return entity;
+    }
+
+    @Override
+    public List<TaskEntity> findAllByBoard(int boardId) {
+        Query query = entityManager.createQuery("from TaskEntity as task where task.board.id = :boardId");
+        query.setParameter("boardId", boardId);
+        return query.getResultList();
     }
 }

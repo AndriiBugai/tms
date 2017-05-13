@@ -1,54 +1,36 @@
 import React, {Component} from "react";
 import ReactDom from "react-dom";
-import $ from 'jquery';
+
+import Header from './header.jsx';
+import BoardList from './boardList.jsx';
+import TaskList from './taskList.jsx';
+
+const BOARDS_URL = "http://localhost:8080/service/getAllBoards";
+const ALL_TASKS_URL = "http://localhost:8080/service/getAllTasks";
+const TASK_URL = "http://localhost:8080/service/getTasksByBoard/";
+const BOARD_BY_ID_URL = "http://localhost:8080/service/getBoardById/";
+
 
 class App extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            jobs: []
+            boardSelected: 0,
         };
     }
 
-    loadCommentsFromServer() {
-        $.ajax({
-            url: "https://codepen.io/jobs.json",
-            dataType: 'json',
-            success: (data) => {
-                this.setState({jobs: data.jobs});
-            },
-            error: (xhr, status, err) => {
-                console.error("url", status, err.toString());
-            }
-        });
-    }
-
-    componentDidMount() {
-        this.loadCommentsFromServer();
-        setInterval(this.loadCommentsFromServer.bind(this), 2000);
-    }
-
-    componentWillUnmount() {
-        this.serverRequest.abort();
+    checkBoard(boardId) {
+        console.log(boardId);
+        this.setState({boardSelected: boardId})
     }
 
     render() {
         return (
             <div>
-                <h1>Jobs!</h1>
-                {this.state.jobs.map(function (job) {
-                    return (
-                        <div key={job.id} className="task">
-                            <a href={job.url}>
-                                {job.company_name}
-                                is looking for a
-                                {job.term}
-                                {job.title}
-                            </a>
-                        </div>
-                    );
-                })}
+                <Header/>
+                <BoardList boardId={this.state.boardSelected} onClick={i => this.checkBoard(i)}/>
+                <TaskList  boardId={this.state.boardSelected}/>
             </div>
         )
     }
