@@ -68,3 +68,8 @@ body {
 .boards-list-menu, .task-list-menu {
     height: 40px;
 }
+
+.sign-in-menu {
+    margin: 0 auto;
+    width: 300px;
+}

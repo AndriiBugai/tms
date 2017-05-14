@@ -18,7 +18,7 @@ export default class TaskList extends React.Component {
             tasks: [],
             taskPopupIsOpen: false
         };
-        injectTapEventPlugin();
+
 
     }
 

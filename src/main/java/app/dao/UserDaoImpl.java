@@ -6,6 +6,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import java.util.List;
 
 @Repository
@@ -41,5 +42,15 @@ public class UserDaoImpl implements UserDao {
     public PersonEntity create(PersonEntity entity) {
         entityManager.persist(entity);
         return entity;
+    }
+
+    @Override
+    public PersonEntity findUserForSignIn(String login, String password) {
+        Query query = entityManager.createQuery("from PersonEntity as person " +
+                                                "where person.login = :login " +
+                                                "and person.password = :password");
+        query.setParameter("login", login);
+        query.setParameter("password", password);
+        return (PersonEntity) query.getSingleResult();
     }
 }
