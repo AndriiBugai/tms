@@ -1,26 +1,39 @@
 import React, {Component} from "react";
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import ConfirmationPopup from './confirmationPopup.jsx';
+import TaskPopup from './taskPopup.jsx';
+
 
 import ReactDom from "react-dom";
 import $ from 'jquery';
 import FontAwesome from "react-fontawesome"
-
 
 export default class TaskList extends React.Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            tasks: []
+            tasks: [],
+            taskPopupIsOpen: false
         };
         injectTapEventPlugin();
 
     }
+
+    openPopup() {
+        this.setState({
+            taskPopupIsOpen: true
+        });
+    }
+
+    closePopup() {
+        this.setState({
+            taskPopupIsOpen: false
+        });
+    }
+
 
     loadFromServer(boardId) {
         $.ajax({
@@ -54,9 +67,24 @@ export default class TaskList extends React.Component {
 
     render() {
         let updateCallback = this.update.bind(this);
+        let closePopupCallback = this.closePopup.bind(this);
         return (
             <div className="task-list">
-                <div> Your tasks:</div>
+                <div className="task-list-menu">
+                    <span>
+                        Your tasks:
+                    </span>
+
+                    <span className="addTask">
+                        <RaisedButton label="Dialog" onTouchTap={() => this.openPopup()} />
+                        <TaskPopup isOpen={this.state.taskPopupIsOpen}
+                                           onCancel={closePopupCallback}
+                                           onSubmit={() => this.createTask()}
+                                           updateCallback={updateCallback}
+                                           boardId={this.props.boardId}
+                        />
+                    </span>
+                </div>
                 {this.state.tasks.map(function (task) {
                     return (
                         <TaskItem key={task.id} task={task} updateCallback={updateCallback} />
@@ -72,19 +100,19 @@ class TaskItem extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            popupIsOpen: false
+            deletionPopupIsOpen: false
         };
     }
 
     openPopup() {
         this.setState({
-            popupIsOpen: true
+            deletionPopupIsOpen: true
         });
     }
 
     closePopup() {
         this.setState({
-            popupIsOpen: false
+            deletionPopupIsOpen: false
         });
     }
 
@@ -115,7 +143,7 @@ class TaskItem extends React.Component {
                         <FontAwesome name='trash-o' />
                     </div>
                 </div>
-                <ConfirmationPopup isOpen={this.state.popupIsOpen}
+                <ConfirmationPopup isOpen={this.state.deletionPopupIsOpen}
                                    onCancel={() => this.closePopup()}
                                    onSubmit={() => this.deleteTask()}
                 />

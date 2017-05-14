@@ -60,3 +60,11 @@ body {
 .task-controls {
     float: right;
 }
+
+.addTask {
+    float: right;
+}
+
+.boards-list-menu, .task-list-menu {
+    height: 40px;
+}

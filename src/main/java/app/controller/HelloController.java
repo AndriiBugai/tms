@@ -2,16 +2,18 @@ package app.controller;
 
 import app.dao.BoardDao;
 import app.dao.TaskDao;
+import app.dao.UserDao;
 import app.entity.BoardEntity;
+import app.entity.PersonEntity;
 import app.entity.TaskEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
@@ -24,12 +26,36 @@ public class HelloController {
 
     @Autowired
     BoardDao boardDao;
+
+    @Autowired
+    UserDao userDao;
     
     @RequestMapping("/getAllTasks")
     public String getAllTasks() throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         List<TaskEntity> entityList = taskDao.findAll();
         return mapper.writeValueAsString(entityList);
+    }
+
+    @RequestMapping(value = "/createTask/", method = RequestMethod.POST)
+    public void createTask(@RequestParam("name") String name,
+                           @RequestParam("description") String description,
+                           @RequestParam("topPriority") boolean topPriority,
+                           @RequestParam("boardId") int boardId) throws JsonProcessingException {
+
+        BoardEntity board = boardDao.findById(boardId);
+        PersonEntity person = userDao.findById(1);
+
+
+        TaskEntity task = new TaskEntity();
+        task.setName(name);
+        task.setDescription(description);
+        task.setTopPriority(topPriority);
+        task.setBoard(board);
+        task.setCreatorPerson(person);
+        task.setAssigneePerson(person);
+        task.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        TaskEntity persistedTask = taskDao.create(task);
     }
 
     @RequestMapping("/getTasksByBoard/{boardId}")

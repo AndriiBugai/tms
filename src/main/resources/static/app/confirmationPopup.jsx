@@ -4,6 +4,7 @@ import FlatButton from 'material-ui/FlatButton';
 
 export default class ConfirmationPopup extends React.Component {
 
+
     render() {
         const actions = [
             <FlatButton

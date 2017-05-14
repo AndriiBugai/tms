@@ -41,7 +41,7 @@ export default class BoardList extends React.Component {
         let selectedBoard = this.state.boardSelected;
         return (
             <div className="board-list">
-                <div>Your boards:</div>
+                <div className="boards-list-menu">Your boards:</div>
                 {this.state.boards.map(function (board) {
                     return (
                         <BoardItem
