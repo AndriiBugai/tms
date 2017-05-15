@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 @CrossOrigin
 @RestController
@@ -22,9 +23,15 @@ public class UserManagementController {
     UserDao userDao;
 
     @RequestMapping(value = "/signIn/", method = RequestMethod.POST)
-    public void signIn(@RequestParam("login") String login,
+    public String signIn(@RequestParam("login") String login,
                        @RequestParam("password") String password) throws JsonProcessingException {
-        PersonEntity personEntity =  userDao.findUserForSignIn(login, password);
+        try{
+            ObjectMapper mapper = new ObjectMapper();
+            PersonEntity personEntity =  userDao.findUserForSignIn(login, password);
+            return mapper.writeValueAsString(personEntity);
+        } catch (Exception e) {
+            return "no user";
+        }
 
     }
 

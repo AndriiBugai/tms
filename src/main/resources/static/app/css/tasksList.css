@@ -73,3 +73,14 @@ body {
     margin: 0 auto;
     width: 300px;
 }
+
+.side.left-side {
+    width: calc(100% - 200px);
+    display: inline-block;
+}
+
+.side.right-side {
+    width: 180px;
+    display: inline-block;
+    float: right;
+}

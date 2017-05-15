@@ -1,4 +1,5 @@
 import React, {Component} from "react";
+import { Redirect } from 'react-router'
 import ReactDom from "react-dom";
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -43,6 +44,7 @@ export default class LoginPage extends React.Component {
     }
 
     signIn() {
+        let _self = this;
         let signInData = {
             login: this.state.login,
             password: this.state.password
@@ -54,9 +56,13 @@ export default class LoginPage extends React.Component {
                 login: signInData.login,
                 password: signInData.password
             },
-            success: () => {
+            success: (data) => {
                 // updateCallback();
                 // closePopup();
+                if (data) {
+                    _self.setState({logedIn: true});
+
+                }
             },
             error: (xhr, status, err) => {
                 console.error("url", status, err.toString());
@@ -93,6 +99,10 @@ export default class LoginPage extends React.Component {
     }
 
     render() {
+        if(this.state.logedIn) {
+            return <Redirect to='/taskView'/>;
+        }
+
         return (
             <div>
                 <Header/>

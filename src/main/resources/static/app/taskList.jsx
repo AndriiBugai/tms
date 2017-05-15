@@ -58,7 +58,7 @@ export default class TaskList extends React.Component {
     }
 
     componentWillUnmount() {
-        this.serverRequest.abort();
+        // this.serverRequest.abort();
     }
 
     componentWillReceiveProps(nextProps) {
@@ -76,7 +76,7 @@ export default class TaskList extends React.Component {
                     </span>
 
                     <span className="addTask">
-                        <RaisedButton label="Dialog" onTouchTap={() => this.openPopup()} />
+                        <RaisedButton label="Add Task" onTouchTap={() => this.openPopup()} />
                         <TaskPopup isOpen={this.state.taskPopupIsOpen}
                                            onCancel={closePopupCallback}
                                            onSubmit={() => this.createTask()}

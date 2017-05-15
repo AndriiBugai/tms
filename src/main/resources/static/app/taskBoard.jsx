@@ -35,12 +35,5 @@ export default class TaskBoard extends React.Component {
         )
     }
 }
-//
-// function MyApp() {
-//     return (
-//         <MuiThemeProvider>
-//             <App />
-//         </MuiThemeProvider>
-//     )
-// }
+
 

@@ -58,6 +58,18 @@ public class HelloController {
         TaskEntity persistedTask = taskDao.create(task);
     }
 
+    @RequestMapping(value = "/createBoard/", method = RequestMethod.POST)
+    public void createBoard(@RequestParam("name") String name) throws JsonProcessingException {
+        PersonEntity person = userDao.findById(1);
+
+        BoardEntity board = new BoardEntity();
+        board.setName(name);
+        board.setDescription("");
+        board.setCreatorPerson(person);
+        board.setDateCreated(new Timestamp(System.currentTimeMillis()));
+        BoardEntity persistedBoard = boardDao.create(board);
+    }
+
     @RequestMapping("/getTasksByBoard/{boardId}")
     public String getTasksByBoard(@PathVariable String boardId) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
