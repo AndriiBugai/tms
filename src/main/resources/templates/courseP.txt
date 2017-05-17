@@ -1,0 +1,60 @@
+Task Management Application
+
+Users functions
+-log in
+-sign up
+-crud board
+-crud task on project
+-assign user on task
+-
+
+DB tables
+users
+boards
+tasks
+
+
+DROP TABLE board;
+DROP TABLE task;
+DROP TABLE person;
+
+CREATE TABLE person (
+    id SERIAL PRIMARY KEY,
+    first_name varchar(50) NOT NULL,
+    last_name varchar(50) NOT NULL,
+    date_created timestamp,
+    email varchar(50) NOT NULL,
+    login varchar(50) NOT NULL,
+    password varchar(50) NOT NULL
+);
+
+CREATE TABLE board (
+    id SERIAL PRIMARY KEY,
+    name varchar(50) NOT NULL,
+    description varchar(150),
+    date_created timestamp,
+    creator_id integer NOT NULL REFERENCES person(id)
+);
+
+CREATE TABLE task (
+    id SERIAL PRIMARY KEY,
+    name varchar(50) NOT NULL,
+    description varchar(150),
+    date_created timestamp,
+    top_priority boolean,
+    estimation integer,
+    assignee_id integer REFERENCES person(id),
+    creator_id integer REFERENCES person(id),
+    board_id integer REFERENCES board(id)
+);
+
+INSERT INTO person (first_name, last_name, date_created, email, login, password)  VALUES
+    ('Andrii', 'Bugai', CURRENT_TIMESTAMP, 'andriibugai@yahoo.com', 'bugai', '1994');
+INSERT INTO person (first_name, last_name, date_created, email, login, "password")  VALUES
+    ('Ivan', 'Ivanov', CURRENT_TIMESTAMP, 'ivan.ivanov@yahoo.com', 'ivanov', '123');
+
+INSERT INTO board (name, date_created, creator_id)  VALUES
+    ('test board', CURRENT_TIMESTAMP, 1);
+
+INSERT INTO task (name, date_created, creator_id, assignee_id, board_id)  VALUES
+    ('test task', CURRENT_TIMESTAMP, 1, 1, 1);
