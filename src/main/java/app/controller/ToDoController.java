@@ -9,17 +9,21 @@ import app.entity.TaskEntity;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
 @CrossOrigin
 @RestController
+@Scope("session")
+@SessionAttributes(value = "userId")
 @RequestMapping("/service/")
-public class HelloController {
+public class ToDoController {
 
     @Autowired
     TaskDao taskDao;
@@ -59,8 +63,9 @@ public class HelloController {
     }
 
     @RequestMapping(value = "/createBoard/", method = RequestMethod.POST)
-    public void createBoard(@RequestParam("name") String name) throws JsonProcessingException {
-        PersonEntity person = userDao.findById(1);
+    public void createBoard(@RequestParam("name") String name, HttpServletRequest request) throws JsonProcessingException {
+        int userId = (int) request.getSession().getAttribute("userId");
+        PersonEntity person = userDao.findById(userId);
 
         BoardEntity board = new BoardEntity();
         board.setName(name);
@@ -78,16 +83,27 @@ public class HelloController {
     }
 
     @RequestMapping("/deleteTasksById/{taskId}")
-    public void deleteTasksByBoard(@PathVariable String taskId) throws JsonProcessingException {
+    public void deleteTasksById(@PathVariable String taskId) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         TaskEntity task = taskDao.findById(Integer.valueOf(taskId));
         taskDao.delete(task);
     }
 
-    @RequestMapping("/getAllBoards")
-    public String getAllBoards() throws JsonProcessingException {
+    @RequestMapping("/deleteBoardById/{boardId}")
+    public void deleteBoardById(@PathVariable String boardId) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
-        List<BoardEntity> entityList = boardDao.findAll();
+        BoardEntity board = boardDao.findById(Integer.valueOf(boardId));
+        boardDao.delete(board);
+    }
+
+
+
+
+    @RequestMapping("/getAllBoards")
+    public String getAllBoards(HttpServletRequest request) throws JsonProcessingException {
+        int userId = (int) request.getSession().getAttribute("userId");
+        ObjectMapper mapper = new ObjectMapper();
+        List<BoardEntity> entityList = boardDao.findByUserId(userId);
         return mapper.writeValueAsString(entityList);
     }
 
@@ -102,6 +118,7 @@ public class HelloController {
     public String startHtml(){
         return "/templates/greeting.html";
     }
+
 
 
 }

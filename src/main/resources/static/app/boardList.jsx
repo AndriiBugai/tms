@@ -5,6 +5,11 @@ import BoardPopup from './boardPopup.jsx'
 import ReactDom from "react-dom";
 import $ from 'jquery';
 
+import FontAwesome from "react-fontawesome"
+import ConfirmationPopup from './confirmationPopup.jsx';
+
+
+
 export default class BoardList extends React.Component {
 
     constructor(props) {
@@ -68,20 +73,21 @@ export default class BoardList extends React.Component {
                     Your boards:
 
                     <span className="addTask">
-                        <RaisedButton label="Add Board" onTouchTap={() => this.openPopup()} />
+                        <RaisedButton label="Add Board" onTouchTap={() => this.openPopup()}/>
                         <BoardPopup isOpen={this.state.boardPopupIsOpen}
-                                   onCancel={closePopupCallback}
-                                   updateCallback={updateCallback}
+                                    onCancel={closePopupCallback}
+                                    updateCallback={updateCallback}
                         />
                     </span>
                 </div>
                 {this.state.boards.map(function (board) {
                     return (
                         <BoardItem
-                            key = {board.id}
-                            board = {board}
-                            onClick = {() => onClickFunc(board.id)}
-                            selected = {selectedBoard == board.id}
+                            key={board.id}
+                            board={board}
+                            onClick={() => onClickFunc(board.id)}
+                            selected={selectedBoard == board.id}
+                            updateCallback={updateCallback}
                         />
                     );
                 })}
@@ -90,17 +96,64 @@ export default class BoardList extends React.Component {
     }
 }
 
-function BoardItem(props) {
-    return (
-        <div key={props.board.id} onClick={props.onClick} className={"task " + (props.selected ? "selected" : "")}>
-            <a href="">
-                {props.board.name}
-            </a>
+class BoardItem extends React.Component {
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            deletionPopupIsOpen: false
+        };
+    }
+
+    openPopup() {
+        this.setState({
+            deletionPopupIsOpen: true
+        });
+    }
+
+    closePopup() {
+        this.setState({
+            deletionPopupIsOpen: false
+        });
+    }
+
+    deleteTask() {
+        let taskId = this.props.board.id;
+        let updateCallback = this.props.updateCallback;
+        let closePopup = this.closePopup.bind(this);
+        $.ajax({
+            url: "http://localhost:8080/service/deleteBoardById/" + taskId,
+            success: () => {
+                updateCallback();
+                closePopup();
+            },
+            error: (xhr, status, err) => {
+                console.error("url", status, err.toString());
+            }
+        });
+    }
+
+    render() {
+        return (
+            <div key={this.props.board.id} onClick={this.props.onClick} className={"task " + (this.props.selected ? "selected" : "")}>
+                <div className="task-body">
+                    <a href="">
+                        {this.props.board.name}
+                    </a>
+                </div>
+                <div className="task-controls">
+                    <div className="deleteTask" onClick={() => this.openPopup()}>
+                        <FontAwesome name='trash-o'/>
+                    </div>
+                </div>
+                <ConfirmationPopup isOpen={this.state.deletionPopupIsOpen}
+                                   onCancel={() => this.closePopup()}
+                                   onSubmit={() => this.deleteTask()}
+                />
 
 
-
-
-        </div>
-    );
+            </div>
+        );
+    }
 }
 

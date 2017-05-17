@@ -51,7 +51,7 @@ export default class LoginPage extends React.Component {
         };
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/user-service/signIn/",
+            url: "http://localhost:8080/service/signIn/",
             data: {
                 login: signInData.login,
                 password: signInData.password
@@ -126,7 +126,7 @@ export default class LoginPage extends React.Component {
                                     type="password"
                                     onChange={this.handleInputChange.bind(this, 'password')}
                                 /><br />
-                                <FlatButton label="Primary"
+                                <FlatButton label="Ok"
                                             primary={true}
                                             onTouchTap={this.signIn.bind(this)}/>
                             </p>
@@ -162,7 +162,7 @@ export default class LoginPage extends React.Component {
                                     type="password"
                                     onChange={this.handleInputChange.bind(this, 'password')}
                                 /><br />
-                                <FlatButton label="Primary"
+                                <FlatButton label="Ok"
                                             primary={true}
                                             onTouchTap={this.register.bind(this)}/>
                             </p>

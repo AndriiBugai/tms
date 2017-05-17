@@ -2,6 +2,7 @@ package app.entity;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.Date;
 
 /**
  * Created by andre on 09.04.2017.
@@ -12,7 +13,7 @@ public class PersonEntity {
     private int id;
     private String firstName;
     private String lastName;
-    private Timestamp dateCreated;
+    private Date dateCreated;
     private String email;
     private String login;
     private String password;
@@ -50,11 +51,11 @@ public class PersonEntity {
 
     @Basic
     @Column(name = "date_created", nullable = true)
-    public Timestamp getDateCreated() {
+    public Date getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Timestamp dateCreated) {
+    public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
     }
 
