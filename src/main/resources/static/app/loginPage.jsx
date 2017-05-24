@@ -51,7 +51,7 @@ export default class LoginPage extends React.Component {
         };
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/service/signIn/",
+            url: "http://localhost:8080/user-service/signIn/",
             data: {
                 login: signInData.login,
                 password: signInData.password
@@ -71,6 +71,7 @@ export default class LoginPage extends React.Component {
     }
 
     register() {
+        let _self = this;
         let registerData = {
             firstName: this.state.firstName,
             lastName: this.state.lastName,
@@ -88,9 +89,10 @@ export default class LoginPage extends React.Component {
                 login: registerData.login,
                 password: registerData.password
             },
-            success: () => {
-                // updateCallback();
-                // closePopup();
+            success: (data) => {
+                if (data) {
+                    _self.setState({logedIn: true});
+                }
             },
             error: (xhr, status, err) => {
                 console.error("url", status, err.toString());

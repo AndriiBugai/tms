@@ -12,14 +12,20 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.16.1",
+    "babel-runtime": "^6.23.0",
+    "core-js": "^2.4.1",
+    "jquery": "^3.2.1",
     "json-loader": "^0.5.4",
+    "material-ui": "^0.18.1",
     "react": "^15.5.4",
     "react-dom": "^15.5.4",
     "react-fontawesome": "^1.6.1",
     "react-router": "^4.1.1",
     "react-router-dom": "^4.1.1",
+    "react-tap-event-plugin": "^2.0.1",
     "requirejs": "^2.3.3",
-    "rest": "^2.0.0"
+    "rest": "^2.0.0",
+    "webpack": "^2.6.0"
   },
   "devDependencies": {
     "babel-core": "^6.24.1",
@@ -32,7 +38,6 @@
     "by": "^0.2.3",
     "parameter": "^2.0.0",
     "style-loader": "^0.13.0",
-    "webpack": "^2.5.1",
     "webpack-dev-server": "^2.4.5"
   }
 }

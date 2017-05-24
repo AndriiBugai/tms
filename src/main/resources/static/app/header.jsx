@@ -1,6 +1,7 @@
 import React, {Component} from "react";
 import { Redirect } from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton';
+import $ from 'jquery';
 
 
 // const styles = {
@@ -20,6 +21,17 @@ export default class Header extends React.Component {
 
     logOut() {
         this.setState({logedIn2: false});
+        let _self = this;
+        $.ajax({
+            type: "POST",
+            url: "http://localhost:8080/user-service/logOut/",
+            success: (data) => {
+                this.setState({logedIn2: false});
+            },
+            error: (xhr, status, err) => {
+                console.error("url", status, err.toString());
+            }
+        });
     }
 
     render() {

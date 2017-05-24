@@ -6,6 +6,7 @@ import app.dao.UserDao;
 import app.entity.BoardEntity;
 import app.entity.PersonEntity;
 import app.entity.TaskEntity;
+import app.entity.UserData;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.servlet.http.HttpServletRequest;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
@@ -33,6 +33,9 @@ public class ToDoController {
 
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    UserData userData;
     
     @RequestMapping("/getAllTasks")
     public String getAllTasks() throws JsonProcessingException {
@@ -63,8 +66,8 @@ public class ToDoController {
     }
 
     @RequestMapping(value = "/createBoard/", method = RequestMethod.POST)
-    public void createBoard(@RequestParam("name") String name, HttpServletRequest request) throws JsonProcessingException {
-        int userId = (int) request.getSession().getAttribute("userId");
+    public void createBoard(@RequestParam("name") String name) throws JsonProcessingException {
+        int userId = userData.getUserId();
         PersonEntity person = userDao.findById(userId);
 
         BoardEntity board = new BoardEntity();
@@ -96,14 +99,11 @@ public class ToDoController {
         boardDao.delete(board);
     }
 
-
-
-
     @RequestMapping("/getAllBoards")
-    public String getAllBoards(HttpServletRequest request) throws JsonProcessingException {
-        int userId = (int) request.getSession().getAttribute("userId");
-        ObjectMapper mapper = new ObjectMapper();
+    public String getAllBoards() throws JsonProcessingException {
+        int userId = userData.getUserId();
         List<BoardEntity> entityList = boardDao.findByUserId(userId);
+        ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(entityList);
     }
 
@@ -113,12 +113,6 @@ public class ToDoController {
         BoardEntity boardEntity = boardDao.findById(Integer.valueOf(boardId));
         return mapper.writeValueAsString(boardEntity);
     }
-
-    @RequestMapping("/start")
-    public String startHtml(){
-        return "/templates/greeting.html";
-    }
-
 
 
 }
