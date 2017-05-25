@@ -53,4 +53,13 @@ public class UserDaoImpl implements UserDao {
         query.setParameter("password", password);
         return (PersonEntity) query.getSingleResult();
     }
+
+    @Override
+    public PersonEntity findUserByLogin(String login) {
+        Query query = entityManager.createQuery("from PersonEntity as person where person.login = :login");
+        query.setParameter("login", login);
+        return (PersonEntity) query.getSingleResult();
+    }
+
+
 }
