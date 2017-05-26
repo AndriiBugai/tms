@@ -13,13 +13,18 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 @Configuration
 @ComponentScan("app")
 class WebSecurityConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
+    private final UserDao userDao;
+
     @Autowired
-    UserDao userDao;
+    public WebSecurityConfiguration(UserDao userDao) {
+        this.userDao = userDao;
+    }
 
     @Override
     public void init(AuthenticationManagerBuilder auth) throws Exception {
