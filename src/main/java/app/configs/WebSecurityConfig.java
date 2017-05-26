@@ -24,10 +24,15 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/",
                         "/user-service/**",
+                        "/service/**",
                         "/login",
                         "/**/*.html",
                         "/**/*.css",
-                        "/**/*.js"
+                        "/**/*.js",
+                        "/**/*.ico",
+                        "/**/*.woff2",
+                        "/**/*.woff",
+                        "/**/*.ttf"
                 ).permitAll()
                 .anyRequest()
                 .authenticated()
