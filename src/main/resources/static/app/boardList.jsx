@@ -8,8 +8,6 @@ import $ from 'jquery';
 import FontAwesome from "react-fontawesome"
 import ConfirmationPopup from './confirmationPopup.jsx';
 
-
-
 export default class BoardList extends React.Component {
 
     constructor(props) {
@@ -24,6 +22,9 @@ export default class BoardList extends React.Component {
         $.ajax({
             url: "http://localhost:8080/service/getAllBoards",
             dataType: 'json',
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", window["authToken"]);
+            },
             success: (data) => {
                 this.setState({boards: data});
             },
@@ -123,6 +124,9 @@ class BoardItem extends React.Component {
         let closePopup = this.closePopup.bind(this);
         $.ajax({
             url: "http://localhost:8080/service/deleteBoardById/" + taskId,
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", window["authToken"]);
+            },
             success: () => {
                 updateCallback();
                 closePopup();

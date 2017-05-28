@@ -26,6 +26,7 @@ export default class Header extends React.Component {
             type: "POST",
             url: "http://localhost:8080/user-service/logOut/",
             success: (data) => {
+                window["authToken"] = null;
                 this.setState({logedIn2: false});
             },
             error: (xhr, status, err) => {
@@ -36,7 +37,7 @@ export default class Header extends React.Component {
 
     render() {
         if(!this.state.logedIn2) {
-            return <Redirect to='/login'/>;
+            return <Redirect to='/loginView'/>;
         }
 
         return (

@@ -24,7 +24,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers(
                         "/",
                         "/user-service/**",
-                        "/service/**",
+//                        "/service/**",
                         "/login",
                         "/**/*.html",
                         "/**/*.css",

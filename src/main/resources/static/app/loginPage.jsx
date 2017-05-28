@@ -5,6 +5,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 
+
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Header from './header.jsx';
 import TextField from 'material-ui/TextField';
@@ -46,29 +47,47 @@ export default class LoginPage extends React.Component {
     signIn() {
         let _self = this;
         let signInData = {
-            login: this.state.login,
+            username: this.state.login,
             password: this.state.password
         };
+        let cred = JSON.stringify(signInData);
+        let url = "http://localhost:8080/login";
+        $.ajax({
+            type: "POST",
+            beforeSend: function(request) {
+                request.setRequestHeader("Content-Type", "text/plain");
+            },
+            url: url,
+            data: cred,
+            success: (data, status, request) => {
+                let authToken = request.getResponseHeader("Authorization");
+                window["authToken"] = authToken;
+                _self.setUserToSession(signInData, _self);
+            },
+            error: (xhr, status, err) => {
+                console.log("url", status, err.toString());
+            }
+        });
+
+    }
+
+    setUserToSession(signInData, _self) {
         $.ajax({
             type: "POST",
             url: "http://localhost:8080/user-service/signIn/",
             data: {
-                login: signInData.login,
+                login: signInData.username,
                 password: signInData.password
             },
             success: (data) => {
-                // updateCallback();
-                // closePopup();
-                if (data) {
-                    _self.setState({logedIn: true});
-
-                }
+                _self.setState({logedIn: true});
             },
             error: (xhr, status, err) => {
-                console.error("url", status, err.toString());
+                console.log("url", status, err.toString());
             }
         });
     }
+
 
     register() {
         let _self = this;

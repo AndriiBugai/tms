@@ -4,6 +4,8 @@ import FlatButton from 'material-ui/FlatButton';
 import Checkbox from 'material-ui/Checkbox';
 import TextField from 'material-ui/TextField';
 import $ from 'jquery';
+import cookie from 'react-cookie'
+
 
 
 const styles = {
@@ -44,6 +46,9 @@ export default class BoardPopup extends React.Component {
         $.ajax({
             type: "POST",
             url: "http://localhost:8080/service/createBoard/",
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", window["authToken"]);
+            },
             data: {
                 name: task.name,
             },

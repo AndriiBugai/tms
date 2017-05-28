@@ -55,11 +55,14 @@ export default class TaskPopup extends React.Component {
         let closePopup = this.props.onCancel;
         $.ajax({
             type: "POST",
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", window["authToken"]);
+            },
             url: "http://localhost:8080/service/createTask/",
             data: {
                 name: task.name,
-                description: task.description,
-                topPriority: task.topPriority,
+                // description: task.description,
+                // topPriority: task.topPriority,
                 boardId: task.boardId
             },
             success: () => {

@@ -46,8 +46,8 @@ public class ToDoController {
 
     @RequestMapping(value = "/createTask/", method = RequestMethod.POST)
     public void createTask(@RequestParam("name") String name,
-                           @RequestParam("description") String description,
-                           @RequestParam("topPriority") boolean topPriority,
+//                           @RequestParam("description") String description,
+//                           @RequestParam("topPriority") boolean topPriority,
                            @RequestParam("boardId") int boardId) throws JsonProcessingException {
 
         BoardEntity board = boardDao.findById(boardId);
@@ -56,8 +56,8 @@ public class ToDoController {
 
         TaskEntity task = new TaskEntity();
         task.setName(name);
-        task.setDescription(description);
-        task.setTopPriority(topPriority);
+        task.setDescription("");
+        task.setTopPriority(false);
         task.setBoard(board);
         task.setCreatorPerson(person);
         task.setAssigneePerson(person);
