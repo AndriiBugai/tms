@@ -62,6 +62,7 @@ export default class LoginPage extends React.Component {
             success: (data, status, request) => {
                 let authToken = request.getResponseHeader("Authorization");
                 window["authToken"] = authToken;
+                window["userLogin"] = signInData.username;
                 _self.setUserToSession(signInData, _self);
             },
             error: (xhr, status, err) => {
@@ -110,7 +111,7 @@ export default class LoginPage extends React.Component {
             },
             success: (data) => {
                 if (data) {
-                    _self.setState({logedIn: true});
+                    //_self.setState({logedIn: true});
                 }
             },
             error: (xhr, status, err) => {

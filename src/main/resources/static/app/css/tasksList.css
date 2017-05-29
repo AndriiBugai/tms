@@ -14,7 +14,6 @@ body {
 }
 
 .header__header-content {
-    width: 80%;
     margin: 0 auto;
     padding-top: 5px;
 }
@@ -22,10 +21,12 @@ body {
 .title {
     vertical-align: middle;
     font-size: 24px;
+    margin-left: 15px;
 }
 
 .subtitle {
     font-size: 10px;
+    margin-left: 15px;
 }
 
 .board-list {
@@ -75,12 +76,16 @@ body {
 }
 
 .side.left-side {
-    width: calc(100% - 200px);
+    width: calc(100% - 300px);
     display: inline-block;
 }
 
 .side.right-side {
-    width: 180px;
+    width: 290px;
     display: inline-block;
     float: right;
+}
+
+.side.right-side .btn {
+    margin-left: 8px;
 }

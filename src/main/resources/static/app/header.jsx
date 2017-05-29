@@ -15,7 +15,8 @@ export default class Header extends React.Component {
         super(props);
         this.state = {
             tasks: [],
-            logedIn2: true
+            logedIn2: true,
+            userProfileView: false
         };
     }
 
@@ -27,6 +28,7 @@ export default class Header extends React.Component {
             url: "http://localhost:8080/user-service/logOut/",
             success: (data) => {
                 window["authToken"] = null;
+                window["userLogin"] = null;
                 this.setState({logedIn2: false});
             },
             error: (xhr, status, err) => {
@@ -35,10 +37,18 @@ export default class Header extends React.Component {
         });
     }
 
+    redirectToUserProfile() {
+        this.setState({userProfileView: true});
+    }
+
     render() {
         if(!this.state.logedIn2) {
             return <Redirect to='/loginView'/>;
         }
+        if(this.state.userProfileView) {
+            return <Redirect to='/profileView'/>;
+        }
+        let userProfileBtnText = window['userLogin'] + ' profile';
 
         return (
             <div className="header">
@@ -48,18 +58,37 @@ export default class Header extends React.Component {
                             To Do List
                         </div>
                         <div className="subtitle">
-                            Java EE lab
+                            Java EE project
                         </div>
                     </div>
-                    <div className="side right-side">
-                        <RaisedButton
-                            label="Log Out"
-                            onTouchTap={this.logOut.bind(this)} />
-                    </div>
+                    <ControlBtns
+                        userProfileBtnText = {userProfileBtnText}
+                        userProfileBtnClick = {this.redirectToUserProfile.bind(this)}
+                        logOutBtnClick = {this.logOut.bind(this)}
+                    />
                 </div>
-
-
             </div>
         )
+    }
+
+
+}
+
+function ControlBtns(props) {
+    if(window["userLogin"]) {
+        return (
+            <div className="side right-side">
+                <RaisedButton
+                    className="btn"
+                    label={props.userProfileBtnText}
+                    onTouchTap={props.userProfileBtnClick} />
+                <RaisedButton
+                    className="btn"
+                    label="Log Out"
+                    onTouchTap={props.logOutBtnClick} />
+            </div>
+        )
+    } else {
+        return (<div className="side right-side"></div>)
     }
 }
