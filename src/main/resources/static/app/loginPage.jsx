@@ -5,7 +5,6 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 
 
-
 import {Tabs, Tab} from 'material-ui/Tabs';
 import Header from './header.jsx';
 import TextField from 'material-ui/TextField';
@@ -37,6 +36,22 @@ export default class LoginPage extends React.Component {
             value: value,
         });
     };
+
+    loadFromServer(boardId) {
+        $.ajax({
+            url: "http://localhost:8080/service/getTasksByBoard/" + boardId,
+            dataType: 'json',
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", window["authToken"]);
+            },
+            success: (data) => {
+                this.setState({tasks: data});
+            },
+            error: (xhr, status, err) => {
+                console.error("url", status, err.toString());
+            }
+        });
+    }
 
     handleInputChange (name, e) {
         var change = {};

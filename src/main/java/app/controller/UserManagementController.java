@@ -65,9 +65,40 @@ public class UserManagementController {
         user.setPassword(password);
         user.setDateCreated(new Date());
         PersonEntity personEntity = userDao.create(user);
-        userData.setUserId(personEntity.getId());
+//        userData.setUserId(personEntity.getId());
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(personEntity);
+    }
+
+    @RequestMapping(value = "/updateProfile", method = RequestMethod.POST)
+    public String updateProfile(  @RequestParam("firstName") String firstName,
+                                  @RequestParam("lastName") String lastName,
+                                  @RequestParam("email") String email,
+                                  @RequestParam("login") String login,
+                                  @RequestParam("password") String password) throws JsonProcessingException {
+        int currentUserId = userData.getUserId();
+        PersonEntity user =  userDao.findById(currentUserId);
+        user.setEmail(email);
+        user.setFirstName(firstName);
+        user.setLastName(lastName);
+        user.setLogin(login);
+        user.setPassword(password);
+        PersonEntity personEntity = userDao.update(user);
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.writeValueAsString(personEntity);
+    }
+
+    @RequestMapping(value = "/getCurrentUser", method = RequestMethod.GET)
+    public String findUserByName() throws JsonProcessingException {
+        try{
+            int currentUserId = userData.getUserId();
+            PersonEntity personEntity =  userDao.findById(currentUserId);
+            ObjectMapper mapper = new ObjectMapper();
+            return mapper.writeValueAsString(personEntity);
+        } catch (Exception e) {
+            logOut();
+            return "no user";
+        }
     }
 
 }

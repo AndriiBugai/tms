@@ -8,6 +8,7 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import TaskBoard from './app/taskBoard.jsx';
 import LoginPage from './app/loginPage.jsx';
+import ProfilePage from './app/profilePage.jsx';
 
 injectTapEventPlugin();
 ReactDOM.render((
@@ -18,6 +19,7 @@ ReactDOM.render((
                 <Route path='/' component={LoginPage}/>
                 <Route path='/taskView' component={TaskBoard}/>
                 <Route path='/loginView' component={LoginPage}/>
+                <Route path='/profileView' component={ProfilePage}/>
             </div>
         </BrowserRouter>
     </MuiThemeProvider>
