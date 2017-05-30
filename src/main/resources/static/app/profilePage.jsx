@@ -14,7 +14,7 @@ const styles = {
     },
 };
 
-export default class LoginPage extends React.Component {
+export default class ProfilePage extends React.Component {
 
     constructor(props) {
         super(props);
@@ -61,7 +61,8 @@ export default class LoginPage extends React.Component {
             lastName: this.state.lastName,
             email: this.state.email,
             login: this.state.login,
-            password: this.state.password
+            password: this.state.password,
+            passwordRepeat: this.state.passwordRepeat
         };
         $.ajax({
             type: "POST",
@@ -71,7 +72,8 @@ export default class LoginPage extends React.Component {
                 lastName: registerData.lastName,
                 email: registerData.email,
                 login: registerData.login,
-                password: registerData.password
+                password: registerData.password,
+                passwordRepeat: registerData.passwordRepeat
             },
             success: (data) => {
                 if (data) {
@@ -91,7 +93,7 @@ export default class LoginPage extends React.Component {
 
         return (
             <div>
-                <Header/>
+                <Header />
 
                     <div>
                         <p className="sign-in-menu">
@@ -125,6 +127,12 @@ export default class LoginPage extends React.Component {
                                 floatingLabelText="Password"
                                 type="password"
                                 onChange={this.handleInputChange.bind(this, 'password')}
+                            /><br />
+                            <TextField
+                                hintText="Repeat your Password"
+                                floatingLabelText="Password"
+                                type="password"
+                                onChange={this.handleInputChange.bind(this, 'passwordRepeat')}
                             /><br />
                             <FlatButton label="Save changes"
                                         primary={true}

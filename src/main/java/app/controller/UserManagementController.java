@@ -10,6 +10,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Persistable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
@@ -35,7 +36,7 @@ public class UserManagementController {
                          @RequestParam("password") String password) throws JsonProcessingException {
         try{
 
-            PersonEntity personEntity =  userDao.findUserForSignIn(login, password);
+            PersonEntity personEntity =  userDao.findUserByLogin(login);
             userData.setUserId(personEntity.getId());
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(personEntity);
@@ -47,7 +48,7 @@ public class UserManagementController {
 
     @RequestMapping("/logOut/")
     public void logOut()  {
-        userData.invalidate();
+//        userData.invalidate();
     }
 
     @RequestMapping(value = "/register/", method = RequestMethod.POST)
@@ -62,7 +63,9 @@ public class UserManagementController {
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setLogin(login);
-        user.setPassword(password);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password);
+        user.setPassword(hashedPassword);
         user.setDateCreated(new Date());
         PersonEntity personEntity = userDao.create(user);
 //        userData.setUserId(personEntity.getId());
@@ -75,14 +78,20 @@ public class UserManagementController {
                                   @RequestParam("lastName") String lastName,
                                   @RequestParam("email") String email,
                                   @RequestParam("login") String login,
-                                  @RequestParam("password") String password) throws JsonProcessingException {
+                                  @RequestParam("password") String password,
+                                  @RequestParam("passwordRepeat") String passwordRepeat) throws JsonProcessingException {
         int currentUserId = userData.getUserId();
         PersonEntity user =  userDao.findById(currentUserId);
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setLastName(lastName);
         user.setLogin(login);
-        user.setPassword(password);
+        if(!password.equals(passwordRepeat)) {
+            throw new IllegalStateException("passwords are different");
+        }
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String hashedPassword = passwordEncoder.encode(password);
+        user.setPassword(hashedPassword);
         PersonEntity personEntity = userDao.update(user);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(personEntity);

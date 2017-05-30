@@ -12,6 +12,7 @@ public class UserData {
     private int userId;
 
     public UserData() {
+        userId = -1;
     }
 
     public UserData(int userId) {

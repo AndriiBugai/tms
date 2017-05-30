@@ -76,12 +76,12 @@ body {
 }
 
 .side.left-side {
-    width: calc(100% - 300px);
+    width: calc(100% - 400px);
     display: inline-block;
 }
 
 .side.right-side {
-    width: 290px;
+    width: 390px;
     display: inline-block;
     float: right;
 }

@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import { Redirect } from 'react-router'
+import {Redirect} from 'react-router'
 import RaisedButton from 'material-ui/RaisedButton';
 import $ from 'jquery';
 
@@ -12,11 +12,16 @@ import $ from 'jquery';
 export default class Header extends React.Component {
 
     constructor(props) {
+        let userProfileView = false;
+        if(props.page == 'profileView') {
+            userProfileView = true;
+        }
         super(props);
         this.state = {
             tasks: [],
             logedIn2: true,
-            userProfileView: false
+            userProfileView: userProfileView,
+            taskView: false
         };
     }
 
@@ -38,15 +43,22 @@ export default class Header extends React.Component {
     }
 
     redirectToUserProfile() {
-        this.setState({userProfileView: true});
+        this.setState({userProfileView: true, taskView: false});
+    }
+
+    backToTasks() {
+        this.setState({userProfileView: false, taskView: true});
     }
 
     render() {
-        if(!this.state.logedIn2) {
+        if (!this.state.logedIn2) {
             return <Redirect to='/loginView'/>;
         }
-        if(this.state.userProfileView) {
+        if (this.state.userProfileView) {
             return <Redirect to='/profileView'/>;
+        }
+        if (this.state.taskView) {
+            return <Redirect to='/taskView'/>;
         }
         let userProfileBtnText = window['userLogin'] + ' profile';
 
@@ -62,9 +74,12 @@ export default class Header extends React.Component {
                         </div>
                     </div>
                     <ControlBtns
-                        userProfileBtnText = {userProfileBtnText}
-                        userProfileBtnClick = {this.redirectToUserProfile.bind(this)}
-                        logOutBtnClick = {this.logOut.bind(this)}
+                        userProfileView={this.state.userProfileView}
+                        taskView={this.state.taskView}
+                        userProfileBtnText={userProfileBtnText}
+                        userProfileBtnClick={this.redirectToUserProfile.bind(this)}
+                        logOutBtnClick={this.logOut.bind(this)}
+                        backToTasks={this.backToTasks.bind(this)}
                     />
                 </div>
             </div>
@@ -75,19 +90,39 @@ export default class Header extends React.Component {
 }
 
 function ControlBtns(props) {
-    if(window["userLogin"]) {
-        return (
-            <div className="side right-side">
-                <RaisedButton
-                    className="btn"
-                    label={props.userProfileBtnText}
-                    onTouchTap={props.userProfileBtnClick} />
-                <RaisedButton
-                    className="btn"
-                    label="Log Out"
-                    onTouchTap={props.logOutBtnClick} />
-            </div>
-        )
+    if (window["userLogin"]) {
+        // if (props.userProfileView) {
+            return (
+                <div className="side right-side">
+                    <RaisedButton
+                        className="btn"
+                        label="Tasks"
+                        onTouchTap={props.backToTasks}/>
+                    <RaisedButton
+                        className="btn"
+                        label={props.userProfileBtnText}
+                        onTouchTap={props.userProfileBtnClick}/>
+                    <RaisedButton
+                        className="btn"
+                        label="Log Out"
+                        onTouchTap={props.logOutBtnClick}/>
+
+                </div>
+            )
+         // } else {
+        //     return (
+        //         <div className="side right-side">
+        //             <RaisedButton
+        //                 className="btn"
+        //                 label={props.userProfileBtnText}
+        //                 onTouchTap={props.userProfileBtnClick}/>
+        //             <RaisedButton
+        //                 className="btn"
+        //                 label="Log Out"
+        //                 onTouchTap={props.logOutBtnClick}/>
+        //         </div>
+        //     )
+        // }
     } else {
         return (<div className="side right-side"></div>)
     }
