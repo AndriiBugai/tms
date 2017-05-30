@@ -3,6 +3,7 @@ import { Redirect } from 'react-router'
 import Header from './header.jsx';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import Snackbar from 'material-ui/Snackbar';
 import $ from 'jquery';
 
 const styles = {
@@ -19,7 +20,8 @@ export default class ProfilePage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-
+            profileUpdSuccessfulOpen: false,
+            profileUpdErrorOpen: false
         };
     }
 
@@ -28,6 +30,13 @@ export default class ProfilePage extends React.Component {
         change[name] = e.target.value;
         this.setState(change);
     }
+
+    handleRequestNotificationsClose() {
+        this.setState({
+            profileUpdSuccessfulOpen: false,
+            profileUpdErrorOpen: false
+        });
+    };
 
     componentDidMount() {
         this.loadFromServer();
@@ -85,9 +94,15 @@ export default class ProfilePage extends React.Component {
                 if (data) {
                     //_self.setState({logedIn: true});
                 }
+                this.setState({
+                    profileUpdSuccessfulOpen: true
+                });
             },
             error: (xhr, status, err) => {
                 console.error("url", status, err.toString());
+                this.setState({
+                    profileUpdErrorOpen: true
+                });
             }
         });
     }
@@ -144,6 +159,20 @@ export default class ProfilePage extends React.Component {
                                         primary={true}
                                         onTouchTap={this.updateProfile.bind(this)}/>
                         </p>
+
+                        <Snackbar
+                            open={this.state.profileUpdSuccessfulOpen}
+                            message="Profile Update Successful!"
+                            autoHideDuration={4000}
+                            onRequestClose={this.handleRequestNotificationsClose.bind(this)}
+                        />
+
+                        <Snackbar
+                            open={this.state.profileUpdErrorOpen}
+                            message="Profile Update Failed!"
+                            autoHideDuration={4000}
+                            onRequestClose={this.handleRequestNotificationsClose.bind(this)}
+                        />
                     </div>
 
             </div>

@@ -9,7 +9,9 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import Header from './header.jsx';
 import TextField from 'material-ui/TextField';
 import FlatButton from 'material-ui/FlatButton';
+import Snackbar from 'material-ui/Snackbar';
 import $ from 'jquery';
+
 
 
 
@@ -27,7 +29,10 @@ export default class LoginPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 'a',
+            signInSuccessfulOpen: false,
+            signInErrorOpen: false,
+            registerSuccessfulOpen: false,
+            registerErrorOpen: false
         };
     }
 
@@ -82,6 +87,9 @@ export default class LoginPage extends React.Component {
             },
             error: (xhr, status, err) => {
                 console.log("url", status, err.toString());
+                this.setState({
+                    signInErrorOpen: true,
+                });
             }
         });
 
@@ -97,11 +105,17 @@ export default class LoginPage extends React.Component {
                 password: signInData.password
             },
             success: (data) => {
-                _self.setState({logedIn: true});
                 localStorage["userId"] = data.id;
+                this.setState({
+                    signInSuccessfulOpen: true,
+                    logedIn: true
+                });
             },
             error: (xhr, status, err) => {
                 console.log("url", status, err.toString());
+                this.setState({
+                    signInErrorOpen: true,
+                });
             }
         });
     }
@@ -129,13 +143,28 @@ export default class LoginPage extends React.Component {
             success: (data) => {
                 if (data) {
                     //_self.setState({logedIn: true});
-                }
+                    this.setState({
+                        registerSuccessfulOpen: true,
+                    });
+                };
             },
             error: (xhr, status, err) => {
                 console.error("url", status, err.toString());
+                this.setState({
+                    registerErrorOpen: true
+                });
             }
         });
     }
+
+    handleRequestNotificationsClose() {
+        this.setState({
+            signInSuccessfulOpen: false,
+            signInErrorOpen: false,
+            registerSuccessfulOpen: false,
+            registerErrorOpen: false
+        });
+    };
 
     render() {
         if(this.state.logedIn) {
@@ -169,6 +198,19 @@ export default class LoginPage extends React.Component {
                                             primary={true}
                                             onTouchTap={this.signIn.bind(this)}/>
                             </p>
+                            <Snackbar
+                                open={this.state.registerSuccessfulOpen}
+                                message="Registration successful!"
+                                autoHideDuration={4000}
+                                onRequestClose={this.handleRequestNotificationsClose.bind(this)}
+                            />
+
+                            <Snackbar
+                                open={this.state.registerErrorOpen}
+                                message="Registration failed!"
+                                autoHideDuration={4000}
+                                onRequestClose={this.handleRequestNotificationsClose.bind(this)}
+                            />
                         </div>
                     </Tab>
                     <Tab label="Register" value="b">
@@ -205,6 +247,20 @@ export default class LoginPage extends React.Component {
                                             primary={true}
                                             onTouchTap={this.register.bind(this)}/>
                             </p>
+
+                            <Snackbar
+                                open={this.state.signInSuccessfulOpen}
+                                message="Sign In successful!"
+                                autoHideDuration={4000}
+                                onRequestClose={this.handleRequestNotificationsClose.bind(this)}
+                            />
+
+                            <Snackbar
+                                open={this.state.signInErrorOpen}
+                                message="Wrong Login Or Password!"
+                                autoHideDuration={4000}
+                                onRequestClose={this.handleRequestNotificationsClose.bind(this)}
+                            />
                         </div>
                     </Tab>
                 </Tabs>
