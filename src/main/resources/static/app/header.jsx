@@ -32,8 +32,9 @@ export default class Header extends React.Component {
             type: "POST",
             url: "http://localhost:8080/user-service/logOut/",
             success: (data) => {
-                window["authToken"] = null;
-                window["userLogin"] = null;
+                localStorage["authToken"] = null;
+                localStorage["userLogin"] = null;
+                localStorage["userId"] = null;
                 this.setState({logedIn2: false});
             },
             error: (xhr, status, err) => {
@@ -60,7 +61,7 @@ export default class Header extends React.Component {
         if (this.state.taskView) {
             return <Redirect to='/taskView'/>;
         }
-        let userProfileBtnText = window['userLogin'] + ' profile';
+        let userProfileBtnText = localStorage['userLogin'] + ' profile';
 
         return (
             <div className="header">
@@ -90,7 +91,7 @@ export default class Header extends React.Component {
 }
 
 function ControlBtns(props) {
-    if (window["userLogin"]) {
+    if (localStorage["userLogin"]) {
         // if (props.userProfileView) {
             return (
                 <div className="side right-side">

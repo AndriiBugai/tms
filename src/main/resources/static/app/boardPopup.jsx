@@ -45,12 +45,13 @@ export default class BoardPopup extends React.Component {
         let closePopup = this.props.onCancel;
         $.ajax({
             type: "POST",
-            url: "http://localhost:8080/service/createBoard/",
+            url: "http://localhost:8080/service/createBoard",
             beforeSend: function(request) {
-                request.setRequestHeader("Authorization", window["authToken"]);
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
             },
             data: {
                 name: task.name,
+                userId: localStorage["userId"]
             },
             success: () => {
                 updateCallback();

@@ -42,7 +42,7 @@ export default class LoginPage extends React.Component {
             url: "http://localhost:8080/service/getTasksByBoard/" + boardId,
             dataType: 'json',
             beforeSend: function(request) {
-                request.setRequestHeader("Authorization", window["authToken"]);
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
             },
             success: (data) => {
                 this.setState({tasks: data});
@@ -76,8 +76,8 @@ export default class LoginPage extends React.Component {
             data: cred,
             success: (data, status, request) => {
                 let authToken = request.getResponseHeader("Authorization");
-                window["authToken"] = authToken;
-                window["userLogin"] = signInData.username;
+                localStorage["authToken"] = authToken;
+                localStorage["userLogin"] = signInData.username;
                 _self.setUserToSession(signInData, _self);
             },
             error: (xhr, status, err) => {
@@ -91,12 +91,14 @@ export default class LoginPage extends React.Component {
         $.ajax({
             type: "POST",
             url: "http://localhost:8080/user-service/signIn/",
+            dataType: 'json',
             data: {
                 login: signInData.username,
                 password: signInData.password
             },
             success: (data) => {
                 _self.setState({logedIn: true});
+                localStorage["userId"] = data.id;
             },
             error: (xhr, status, err) => {
                 console.log("url", status, err.toString());

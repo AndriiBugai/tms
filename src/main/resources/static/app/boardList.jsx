@@ -20,10 +20,14 @@ export default class BoardList extends React.Component {
 
     loadCommentsFromServer() {
         $.ajax({
+            type: "POST",
             url: "http://localhost:8080/service/getAllBoards",
+            data: {
+                userId: localStorage["userId"]
+            },
             dataType: 'json',
             beforeSend: function(request) {
-                request.setRequestHeader("Authorization", window["authToken"]);
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
             },
             success: (data) => {
                 this.setState({boards: data});
@@ -125,7 +129,7 @@ class BoardItem extends React.Component {
         $.ajax({
             url: "http://localhost:8080/service/deleteBoardById/" + taskId,
             beforeSend: function(request) {
-                request.setRequestHeader("Authorization", window["authToken"]);
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
             },
             success: () => {
                 updateCallback();

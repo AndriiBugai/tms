@@ -56,7 +56,7 @@ export default class TaskPopup extends React.Component {
         $.ajax({
             type: "POST",
             beforeSend: function(request) {
-                request.setRequestHeader("Authorization", window["authToken"]);
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
             },
             url: "http://localhost:8080/service/createTask/",
             data: {

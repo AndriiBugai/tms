@@ -40,7 +40,7 @@ export default class TaskList extends React.Component {
             url: "http://localhost:8080/service/getTasksByBoard/" + boardId,
             dataType: 'json',
             beforeSend: function(request) {
-                request.setRequestHeader("Authorization", window["authToken"]);
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
             },
             success: (data) => {
                 this.setState({tasks: data});
@@ -126,7 +126,7 @@ class TaskItem extends React.Component {
         $.ajax({
             url: "http://localhost:8080/service/deleteTasksById/" + taskId,
             beforeSend: function(request) {
-                request.setRequestHeader("Authorization", window["authToken"]);
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
             },
             success: () => {
                 updateCallback();

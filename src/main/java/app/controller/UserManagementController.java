@@ -13,16 +13,15 @@ import org.springframework.data.domain.Persistable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-@CrossOrigin
 @RestController
 @Scope("session")
 @RequestMapping("/user-service/")
-@SessionAttributes(value = "userId")
 public class UserManagementController {
 
     @Autowired
@@ -32,7 +31,8 @@ public class UserManagementController {
     UserData userData;
 
     @RequestMapping(value = "/signIn/", method = RequestMethod.POST)
-    public String signIn(@RequestParam("login") String login,
+    public String signIn(HttpSession session,
+                         @RequestParam("login") String login,
                          @RequestParam("password") String password) throws JsonProcessingException {
         try{
 
@@ -48,11 +48,11 @@ public class UserManagementController {
 
     @RequestMapping("/logOut/")
     public void logOut()  {
-//        userData.invalidate();
+        userData.invalidate();
     }
 
     @RequestMapping(value = "/register/", method = RequestMethod.POST)
-    public String register(   @RequestParam("firstName") String firstName,
+    public String register( @RequestParam("firstName") String firstName,
                             @RequestParam("lastName") String lastName,
                             @RequestParam("email") String email,
                             @RequestParam("login") String login,
@@ -68,7 +68,6 @@ public class UserManagementController {
         user.setPassword(hashedPassword);
         user.setDateCreated(new Date());
         PersonEntity personEntity = userDao.create(user);
-//        userData.setUserId(personEntity.getId());
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(personEntity);
     }
@@ -79,9 +78,10 @@ public class UserManagementController {
                                   @RequestParam("email") String email,
                                   @RequestParam("login") String login,
                                   @RequestParam("password") String password,
-                                  @RequestParam("passwordRepeat") String passwordRepeat) throws JsonProcessingException {
-        int currentUserId = userData.getUserId();
-        PersonEntity user =  userDao.findById(currentUserId);
+                                  @RequestParam("passwordRepeat") String passwordRepeat,
+                                  @RequestParam("userId") String currentUserId) throws JsonProcessingException {
+        int userId = Integer.valueOf(currentUserId);
+        PersonEntity user =  userDao.findById(userId);
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -97,11 +97,11 @@ public class UserManagementController {
         return mapper.writeValueAsString(personEntity);
     }
 
-    @RequestMapping(value = "/getCurrentUser", method = RequestMethod.GET)
-    public String findUserByName() throws JsonProcessingException {
+    @RequestMapping(value = "/getCurrentUser", method = RequestMethod.POST)
+    public String findUserByName(@RequestParam("userId") String currentUserId) throws JsonProcessingException {
         try{
-            int currentUserId = userData.getUserId();
-            PersonEntity personEntity =  userDao.findById(currentUserId);
+            int userId = Integer.valueOf(currentUserId);
+            PersonEntity personEntity =  userDao.findById(userId);
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(personEntity);
         } catch (Exception e) {

@@ -35,10 +35,14 @@ export default class ProfilePage extends React.Component {
 
     loadFromServer(boardId) {
         $.ajax({
+            type: "POST",
             url: "http://localhost:8080/user-service/getCurrentUser",
             dataType: 'json',
+            data: {
+                userId: localStorage["userId"]
+            },
             beforeSend: function(request) {
-                request.setRequestHeader("Authorization", window["authToken"]);
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
             },
             success: (data) => {
                 this.setState({
@@ -46,6 +50,7 @@ export default class ProfilePage extends React.Component {
                     lastName: data.lastName,
                     email: data.email,
                     login: data.login,
+
                 });
             },
             error: (xhr, status, err) => {
@@ -73,7 +78,8 @@ export default class ProfilePage extends React.Component {
                 email: registerData.email,
                 login: registerData.login,
                 password: registerData.password,
-                passwordRepeat: registerData.passwordRepeat
+                passwordRepeat: registerData.passwordRepeat,
+                userId: localStorage["userId"]
             },
             success: (data) => {
                 if (data) {

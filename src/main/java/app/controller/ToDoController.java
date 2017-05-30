@@ -14,14 +14,13 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @Scope("session")
-@SessionAttributes(value = "userId")
 @RequestMapping("/service/")
 public class ToDoController {
 
@@ -65,9 +64,10 @@ public class ToDoController {
         TaskEntity persistedTask = taskDao.create(task);
     }
 
-    @RequestMapping(value = "/createBoard/", method = RequestMethod.POST)
-    public void createBoard(@RequestParam("name") String name) throws JsonProcessingException {
-        int userId = userData.getUserId();
+    @RequestMapping(value = "/createBoard", method = RequestMethod.POST)
+    public void createBoard(@RequestParam("name") String name,
+                            @RequestParam("userId") String currentUserId) throws JsonProcessingException {
+        int userId = Integer.valueOf(currentUserId) ;
         PersonEntity person = userDao.findById(userId);
 
         BoardEntity board = new BoardEntity();
@@ -99,9 +99,9 @@ public class ToDoController {
         boardDao.delete(board);
     }
 
-    @RequestMapping("/getAllBoards")
-    public String getAllBoards() throws JsonProcessingException {
-        int userId = userData.getUserId();
+    @RequestMapping(value = "/getAllBoards", method = RequestMethod.POST)
+    public String getAllBoards(@RequestParam("userId") String currentUserId) throws JsonProcessingException {
+        int userId = Integer.valueOf(currentUserId) ;
         List<BoardEntity> entityList = boardDao.findByUserId(userId);
         ObjectMapper mapper = new ObjectMapper();
         return mapper.writeValueAsString(entityList);
