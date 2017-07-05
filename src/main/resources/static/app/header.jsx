@@ -1,5 +1,5 @@
 import React, {Component} from "react";
-import {Redirect} from 'react-router'
+import {Redirect, Link } from 'react-router-dom'
 import RaisedButton from 'material-ui/RaisedButton';
 import $ from 'jquery';
 
@@ -92,38 +92,19 @@ export default class Header extends React.Component {
 
 function ControlBtns(props) {
     if (localStorage["userLogin"]) {
-        // if (props.userProfileView) {
-            return (
-                <div className="side right-side">
-                    <RaisedButton
-                        className="btn"
-                        label="Tasks"
-                        onTouchTap={props.backToTasks}/>
-                    <RaisedButton
-                        className="btn"
-                        label={props.userProfileBtnText}
-                        onTouchTap={props.userProfileBtnClick}/>
-                    <RaisedButton
-                        className="btn"
-                        label="Log Out"
-                        onTouchTap={props.logOutBtnClick}/>
-
-                </div>
-            )
-         // } else {
-        //     return (
-        //         <div className="side right-side">
-        //             <RaisedButton
-        //                 className="btn"
-        //                 label={props.userProfileBtnText}
-        //                 onTouchTap={props.userProfileBtnClick}/>
-        //             <RaisedButton
-        //                 className="btn"
-        //                 label="Log Out"
-        //                 onTouchTap={props.logOutBtnClick}/>
-        //         </div>
-        //     )
-        // }
+        return (
+            <div className="side right-side">
+                <span className="input-group-btn">
+                  <Link to="/taskView">Tasks</Link>
+                </span>
+                <span className="input-group-btn">
+                  <Link to="/profileView">Profile</Link>
+                </span>
+                <span className="input-group-btn">
+                  <Link to="/">Log Out</Link>
+                </span>
+            </div>
+        )
     } else {
         return (<div className="side right-side"></div>)
     }

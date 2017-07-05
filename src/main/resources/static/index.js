@@ -16,7 +16,7 @@ ReactDOM.render((
     <MuiThemeProvider>
         <BrowserRouter>
             <div>
-                <Route path='/' component={LoginPage}/>
+                <Route exact path='/' component={LoginPage}/>
                 <Route path='/taskView' component={TaskBoard}/>
                 <Route path='/loginView' component={LoginPage}/>
                 <Route path='/profileView' component={ProfilePage}/>

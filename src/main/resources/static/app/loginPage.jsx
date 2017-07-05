@@ -36,6 +36,10 @@ export default class LoginPage extends React.Component {
         };
     }
 
+    componentWillMount() {
+        localStorage.removeItem('userLogin');
+    }
+
     handleChange = (value) => {
         this.setState({
             value: value,
