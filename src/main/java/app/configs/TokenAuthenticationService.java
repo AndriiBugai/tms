@@ -16,6 +16,7 @@ public class TokenAuthenticationService {
     static final String SECRET = "ThisIsASecret";
     static final String TOKEN_PREFIX = "Bearer";
     static final String HEADER_STRING = "Authorization";
+    static final String EXPOSE_HEADER = "Access-Control-Expose-Headers";
 
     static void addAuthentication(HttpServletResponse res, String username) {
         String JWT = Jwts.builder()
@@ -24,6 +25,7 @@ public class TokenAuthenticationService {
                 .signWith(SignatureAlgorithm.HS512, SECRET)
                 .compact();
         res.addHeader(HEADER_STRING, TOKEN_PREFIX + " " + JWT);
+        res.addHeader(EXPOSE_HEADER, HEADER_STRING);
     }
 
     static Authentication getAuthentication(HttpServletRequest request) {

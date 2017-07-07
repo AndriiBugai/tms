@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@Scope("session")
+@CrossOrigin
 @RequestMapping("/service/")
 public class ToDoController {
 

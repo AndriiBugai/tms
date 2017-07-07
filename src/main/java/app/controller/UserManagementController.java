@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 @RestController
-@Scope("session")
+@CrossOrigin
 @RequestMapping("/user-service/")
 public class UserManagementController {
 

@@ -46,22 +46,6 @@ export default class LoginPage extends React.Component {
         });
     };
 
-    loadFromServer(boardId) {
-        $.ajax({
-            url: "http://localhost:8080/service/getTasksByBoard/" + boardId,
-            dataType: 'json',
-            beforeSend: function(request) {
-                request.setRequestHeader("Authorization", localStorage["authToken"]);
-            },
-            success: (data) => {
-                this.setState({tasks: data});
-            },
-            error: (xhr, status, err) => {
-                console.error("url", status, err.toString());
-            }
-        });
-    }
-
     handleInputChange (name, e) {
         var change = {};
         change[name] = e.target.value;
@@ -171,10 +155,6 @@ export default class LoginPage extends React.Component {
     };
 
     render() {
-        if(this.state.logedIn) {
-            return <Redirect to='/taskView'/>;
-        }
-
         return (
             <div>
                 <Header/>
@@ -272,13 +252,3 @@ export default class LoginPage extends React.Component {
         );
     }
 }
-
-// function MyApp() {
-//     return (
-//         <MuiThemeProvider>
-//             <LoginPage />
-//         </MuiThemeProvider>
-//     )
-// }
-//
-// ReactDom.render(<MyApp />, document.getElementById('react'));

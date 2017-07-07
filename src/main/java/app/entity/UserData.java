@@ -7,7 +7,8 @@ import org.springframework.stereotype.Component;
  * Created by anbu1015 on 5/24/2017.
  */
 @Component
-@Scope(value="session")
+//@Scope(value="session")
+// todo revert to session scope
 public class UserData {
     private int userId;
 

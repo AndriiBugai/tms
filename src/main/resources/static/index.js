@@ -1,7 +1,7 @@
 
 import React, {Component} from "react";
 import ReactDOM from 'react-dom';
-import { BrowserRouter, Route } from 'react-router-dom'
+import { BrowserRouter, Route, HashRouter } from 'react-router-dom'
 
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -14,14 +14,16 @@ injectTapEventPlugin();
 ReactDOM.render((
 
     <MuiThemeProvider>
-        <BrowserRouter>
-            <div>
-                <Route exact path='/' component={LoginPage}/>
-                <Route path='/taskView' component={TaskBoard}/>
-                <Route path='/loginView' component={LoginPage}/>
-                <Route path='/profileView' component={ProfilePage}/>
-            </div>
-        </BrowserRouter>
+        <div>
+            <HashRouter>
+                <div>
+                    <Route exact path='/' component={LoginPage}/>
+                    <Route path='/taskView' component={TaskBoard}/>
+                    <Route path='/loginView' component={LoginPage}/>
+                    <Route path='/profileView' component={ProfilePage}/>
+                </div>
+            </HashRouter>
+        </div>
     </MuiThemeProvider>
     ),
     document.getElementById('react')
