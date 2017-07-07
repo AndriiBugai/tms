@@ -1,14 +1,11 @@
 package app.entity;
 
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by anbu1015 on 5/24/2017.
- */
 @Component
-//@Scope(value="session")
-// todo revert to session scope
+@Scope(value="session", proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class UserData {
     private int userId;
 
