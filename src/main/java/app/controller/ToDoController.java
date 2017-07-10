@@ -105,6 +105,7 @@ public class ToDoController {
         return mapper.writeValueAsString(entityList);
     }
 
+
     @RequestMapping("/getBoardById/{boardId}")
     public String getBoardById(@PathVariable String boardId) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
