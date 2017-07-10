@@ -71,29 +71,6 @@ export default class LoginPage extends React.Component {
                 let authToken = request.getResponseHeader("Authorization");
                 localStorage["authToken"] = authToken;
                 localStorage["userLogin"] = signInData.username;
-                _self.setUserToSession(signInData, _self);
-            },
-            error: (xhr, status, err) => {
-                console.log("url", status, err.toString());
-                this.setState({
-                    signInErrorOpen: true,
-                });
-            }
-        });
-
-    }
-
-    setUserToSession(signInData, _self) {
-        $.ajax({
-            type: "POST",
-            url: "http://localhost:8080/user-service/signIn/",
-            dataType: 'json',
-            data: {
-                login: signInData.username,
-                password: signInData.password
-            },
-            success: (data) => {
-                localStorage["userId"] = data.id;
                 this.setState({
                     signInSuccessfulOpen: true,
                     logedIn: true
@@ -106,8 +83,8 @@ export default class LoginPage extends React.Component {
                 });
             }
         });
-    }
 
+    }
 
     register() {
         let _self = this;

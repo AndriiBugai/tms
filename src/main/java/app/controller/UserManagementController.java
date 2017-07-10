@@ -32,22 +32,6 @@ public class UserManagementController {
     @Autowired
     UserData userData;
 
-    @RequestMapping(value = "/signIn/", method = RequestMethod.POST)
-    public String signIn(HttpSession session,
-                         @RequestParam("login") String login,
-                         @RequestParam("password") String password) throws JsonProcessingException {
-        try{
-
-            PersonEntity personEntity =  userDao.findUserByLogin(login);
-            userData.setUserId(personEntity.getId());
-            ObjectMapper mapper = new ObjectMapper();
-            return mapper.writeValueAsString(personEntity);
-        } catch (Exception e) {
-            logOut();
-            return "no user";
-        }
-    }
-
     @RequestMapping("/logOut/")
     public void logOut()  {
         userData.invalidate();
