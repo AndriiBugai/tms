@@ -11,4 +11,6 @@ import java.util.List;
 public interface BoardDao extends AbstractDao<BoardEntity> {
 
     public List<BoardEntity> findByUserId(int userId);
+
+    public List<BoardEntity> findByUserName(String userName);
 }

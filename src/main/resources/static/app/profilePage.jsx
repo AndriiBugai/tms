@@ -81,6 +81,9 @@ export default class ProfilePage extends React.Component {
         $.ajax({
             type: "POST",
             url: "http://localhost:8080/user-service/updateProfile",
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
+            },
             data: {
                 firstName: registerData.firstName,
                 lastName: registerData.lastName,

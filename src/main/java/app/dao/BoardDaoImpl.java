@@ -29,6 +29,13 @@ public class BoardDaoImpl implements BoardDao {
     }
 
     @Override
+    public List<BoardEntity> findByUserName(String userName) {
+        Query query = entityManager.createQuery("from BoardEntity as board where board.creatorPerson.login = :userName ");
+        query.setParameter("userName", userName);
+        return query.getResultList();
+    }
+
+    @Override
     public BoardEntity findById(int id) {
         return entityManager.find(BoardEntity.class, id);
     }

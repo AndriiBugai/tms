@@ -12,6 +12,8 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.data.domain.Persistable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 
 import javax.servlet.http.HttpSession;
 import java.sql.Timestamp;
@@ -80,8 +82,8 @@ public class UserManagementController {
                                   @RequestParam("password") String password,
                                   @RequestParam("passwordRepeat") String passwordRepeat,
                                   @RequestParam("userId") String currentUserId) throws JsonProcessingException {
-        int userId = Integer.valueOf(currentUserId);
-        PersonEntity user =  userDao.findById(userId);
+        String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+        PersonEntity user =  userDao.findUserByLogin(currentUserLogin);
         user.setEmail(email);
         user.setFirstName(firstName);
         user.setLastName(lastName);
@@ -98,10 +100,10 @@ public class UserManagementController {
     }
 
     @RequestMapping(value = "/getCurrentUser", method = RequestMethod.POST)
-    public String findUserByName(@RequestParam("userId") String currentUserId) throws JsonProcessingException {
+    public String findUserByName() throws JsonProcessingException {
         try{
-            int userId = Integer.valueOf(currentUserId);
-            PersonEntity personEntity =  userDao.findById(userId);
+            String currentUserLogin = SecurityContextHolder.getContext().getAuthentication().getName();
+            PersonEntity personEntity =  userDao.findUserByLogin(currentUserLogin);
             ObjectMapper mapper = new ObjectMapper();
             return mapper.writeValueAsString(personEntity);
         } catch (Exception e) {

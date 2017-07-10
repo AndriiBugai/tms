@@ -11,6 +11,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -45,13 +46,10 @@ public class ToDoController {
 
     @RequestMapping(value = "/createTask/", method = RequestMethod.POST)
     public void createTask(@RequestParam("name") String name,
-//                           @RequestParam("description") String description,
-//                           @RequestParam("topPriority") boolean topPriority,
                            @RequestParam("boardId") int boardId) throws JsonProcessingException {
 
         BoardEntity board = boardDao.findById(boardId);
         PersonEntity person = userDao.findById(1);
-
 
         TaskEntity task = new TaskEntity();
         task.setName(name);
@@ -65,10 +63,9 @@ public class ToDoController {
     }
 
     @RequestMapping(value = "/createBoard", method = RequestMethod.POST)
-    public void createBoard(@RequestParam("name") String name,
-                            @RequestParam("userId") String currentUserId) throws JsonProcessingException {
-        int userId = Integer.valueOf(currentUserId) ;
-        PersonEntity person = userDao.findById(userId);
+    public void createBoard(@RequestParam("name") String name) throws JsonProcessingException {
+        String login = SecurityContextHolder.getContext().getAuthentication().getName();
+        PersonEntity person = userDao.findUserByLogin(login);
 
         BoardEntity board = new BoardEntity();
         board.setName(name);
@@ -100,10 +97,11 @@ public class ToDoController {
     }
 
     @RequestMapping(value = "/getAllBoards", method = RequestMethod.POST)
-    public String getAllBoards(@RequestParam("userId") String currentUserId) throws JsonProcessingException {
-        int userId = Integer.valueOf(currentUserId) ;
-        List<BoardEntity> entityList = boardDao.findByUserId(userId);
+    public String getAllBoards() throws JsonProcessingException {
+        String login = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<BoardEntity> entityList = boardDao.findByUserName(login);
         ObjectMapper mapper = new ObjectMapper();
+        SecurityContextHolder.getContext().getAuthentication();
         return mapper.writeValueAsString(entityList);
     }
 
