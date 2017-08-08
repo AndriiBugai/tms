@@ -144,16 +144,21 @@ class BoardItem extends React.Component {
     render() {
         return (
             <div key={this.props.board.id} onClick={this.props.onClick} className={"task " + (this.props.selected ? "selected" : "")}>
-                <div className="task-body">
-                    <a href="">
-                        {this.props.board.name}
-                    </a>
-                </div>
-                <div className="task-controls">
-                    <div className="deleteTask" onClick={() => this.openPopup()}>
-                        <FontAwesome name='trash-o'/>
+
+                <div className="arrow-right"></div>
+                <div className="task-container">
+                    <div className="task-body">
+                        <a href="">
+                            {this.props.board.name}
+                        </a>
+                    </div>
+                    <div className="task-controls">
+                        <div className="deleteTask" onClick={() => this.openPopup()}>
+                            <FontAwesome name='trash-o'/>
+                        </div>
                     </div>
                 </div>
+
                 <ConfirmationPopup isOpen={this.state.deletionPopupIsOpen}
                                    onCancel={() => this.closePopup()}
                                    onSubmit={() => this.deleteTask()}

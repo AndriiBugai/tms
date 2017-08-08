@@ -36,6 +36,17 @@ body {
     vertical-align: top;
 }
 
+.arrow-right {
+    width: 0;
+    height: 0;
+    border-top: 15px solid transparent;
+    border-bottom: 15px solid transparent;
+    border-left: 30px solid white;
+    display: none;
+    margin-bottom: -10px;
+}
+
+
 .task-list {
     width: 66%;
     display: inline-block;
@@ -44,19 +55,47 @@ body {
 }
 
 .task {
-    padding: 5px;
     background: lightblue;
     margin-top: 3px;
     cursor: pointer;
+    font-size: 16px;
 }
 
-.task.selected {
-    background: green;
+.task-container {
+    padding: 6px;
+    display: inline-block;
+    width: calc(100% - 15px);
+}
+
+.task a {
+    text-decoration: none;
+    color: black;
+}
+
+.task .task-controls {
+    display: none;
+}
+
+.task:hover .task-controls {
+    display: block;
+}
+
+/*.task.selected {*/
+    /*background: green;*/
+/*}*/
+
+.task.selected .arrow-right{
+    display: inline-block;
+}
+
+.task.selected .task-container {
+    width: calc(100% - 45px);
 }
 
 .task-body, .task-controls {
     display: inline-block;
 }
+
 
 .task-controls {
     float: right;

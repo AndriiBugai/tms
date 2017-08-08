@@ -141,14 +141,18 @@ class TaskItem extends React.Component {
     render() {
         return (
             <div key={this.props.task.id} className="task">
-                <div className="task-body">
-                    {this.props.task.name}
-                </div>
-                <div className="task-controls">
-                    <div className="deleteTask" onClick={() => this.openPopup()}>
-                        <FontAwesome name='trash-o' />
+
+                <div className="task-container">
+                    <div className="task-body">
+                        {this.props.task.name}
+                    </div>
+                    <div className="task-controls">
+                        <div className="deleteTask" onClick={() => this.openPopup()}>
+                            <FontAwesome name='trash-o' />
+                        </div>
                     </div>
                 </div>
+
                 <ConfirmationPopup isOpen={this.state.deletionPopupIsOpen}
                                    onCancel={() => this.closePopup()}
                                    onSubmit={() => this.deleteTask()}
