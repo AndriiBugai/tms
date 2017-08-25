@@ -38,24 +38,7 @@ export default class BoardList extends React.Component {
         });
     }
 
-    deleteTask() {
-        let taskId = this.props.board.id;
-        let updateCallback = this.props.updateCallback;
-        let closePopup = this.closePopup.bind(this);
-        $.ajax({
-            url: "http://localhost:8080/service/deleteBoardById/" + taskId,
-            beforeSend: function(request) {
-                request.setRequestHeader("Authorization", localStorage["authToken"]);
-            },
-            success: () => {
-                updateCallback();
-                closePopup();
-            },
-            error: (xhr, status, err) => {
-                console.error("url", status, err.toString());
-            }
-        });
-    }
+
 
     update() {
         this.loadCommentsFromServer();
@@ -143,16 +126,33 @@ class BoardItem extends React.Component {
         });
     }
 
+    deleteTask() {
+        let taskId = this.props.board.id;
+        let updateCallback = this.props.updateCallback;
+        let closePopup = this.closePopup.bind(this);
+        $.ajax({
+            url: "http://localhost:8080/service/deleteBoardById/" + taskId,
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
+            },
+            success: () => {
+                updateCallback();
+                closePopup();
+            },
+            error: (xhr, status, err) => {
+                console.error("url", status, err.toString());
+            }
+        });
+    }
+
     render() {
         return (
             <div key={this.props.board.id} onClick={this.props.onClick} className={"task " + (this.props.selected ? "selected" : "")}>
 
-                <div className="arrow-right"></div>
                 <div className="task-container">
+                    <div className="arrow-right"></div>
                     <div className="task-body">
-                        <a href="">
-                            {this.props.board.name}
-                        </a>
+                        {this.props.board.name}
                     </div>
                     <div className="task-controls">
                         <div className="deleteTask" onClick={() => this.openPopup()}>
@@ -160,6 +160,7 @@ class BoardItem extends React.Component {
                         </div>
                     </div>
                 </div>
+                <div className="arrow-right blue"></div>
 
                 <ConfirmationPopup isOpen={this.state.deletionPopupIsOpen}
                                    onCancel={() => this.closePopup()}
