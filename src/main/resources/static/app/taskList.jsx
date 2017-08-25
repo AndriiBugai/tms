@@ -74,7 +74,7 @@ export default class TaskList extends React.Component {
         return (
             <div className="task-list">
                 <div className="task-list-menu">
-                    <span>
+                    <span className="tasks-label">
                         Your tasks:
                     </span>
 

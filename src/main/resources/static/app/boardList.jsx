@@ -38,6 +38,25 @@ export default class BoardList extends React.Component {
         });
     }
 
+    deleteTask() {
+        let taskId = this.props.board.id;
+        let updateCallback = this.props.updateCallback;
+        let closePopup = this.closePopup.bind(this);
+        $.ajax({
+            url: "http://localhost:8080/service/deleteBoardById/" + taskId,
+            beforeSend: function(request) {
+                request.setRequestHeader("Authorization", localStorage["authToken"]);
+            },
+            success: () => {
+                updateCallback();
+                closePopup();
+            },
+            error: (xhr, status, err) => {
+                console.error("url", status, err.toString());
+            }
+        });
+    }
+
     update() {
         this.loadCommentsFromServer();
     }
@@ -75,7 +94,9 @@ export default class BoardList extends React.Component {
         return (
             <div className="board-list">
                 <div className="boards-list-menu">
-                    Your boards:
+                    <span className="boards-label">
+                        Your boards:
+                    </span>
 
                     <span className="addTask">
                         <RaisedButton label="Add Board" onTouchTap={() => this.openPopup()}/>
@@ -119,25 +140,6 @@ class BoardItem extends React.Component {
     closePopup() {
         this.setState({
             deletionPopupIsOpen: false
-        });
-    }
-
-    deleteTask() {
-        let taskId = this.props.board.id;
-        let updateCallback = this.props.updateCallback;
-        let closePopup = this.closePopup.bind(this);
-        $.ajax({
-            url: "http://localhost:8080/service/deleteBoardById/" + taskId,
-            beforeSend: function(request) {
-                request.setRequestHeader("Authorization", localStorage["authToken"]);
-            },
-            success: () => {
-                updateCallback();
-                closePopup();
-            },
-            error: (xhr, status, err) => {
-                console.error("url", status, err.toString());
-            }
         });
     }
 

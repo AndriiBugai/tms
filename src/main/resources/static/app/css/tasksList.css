@@ -1,5 +1,6 @@
 body {
     margin: 0;
+    font-family: Roboto, sans-serif;
 }
 
 .header {
@@ -103,6 +104,15 @@ body {
 
 .addTask {
     float: right;
+    display: inline-block;
+}
+
+.boards-label, .tasks-label {
+    vertical-align: middle;
+    text-transform: uppercase;
+    font-size: 14px;
+    margin-top: 11px;
+    display: inline-block;
 }
 
 .boards-list-menu, .task-list-menu {
